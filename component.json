@@ -1,0 +1,26 @@
+{
+  "name": "e",
+  "description": "Simple element creation / templating with SVG support.",
+  "version": "0.0.1",
+  "keywords": [
+    "dom",
+    "element",
+    "svg",
+    "create",
+    "template",
+    "namespace"
+  ],
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ],
+  "dependencies": {
+    "yields/isarray": "*"
+  },
+  "development": {
+    "dependencies": {
+      "visionmedia/mocha": "*",
+      "component/assert": "*"
+    }
+  }
+}
