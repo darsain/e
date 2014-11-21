@@ -1,7 +1,7 @@
 {
   "name": "e",
   "description": "Simple element creation / templating with SVG support.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "keywords": [
     "dom",
     "element",
