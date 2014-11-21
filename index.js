@@ -71,6 +71,9 @@ function applyProperties(element, props) {
 		// handle style as an object
 		else if (attr === 'style' && typeof props[attr] === 'object')
 			for (var rule in props[attr]) element.style[rule] = props[attr][rule];
+		// add class and className to already present classes
+		else if (attr === 'class' || attr === 'className')
+			element.className += ' ' + props[attr];
 		// use xlink namespace for 'xlink:...' attributes
 		else element.setAttributeNS(!attr.indexOf('xlink') ? xlinkNS : null, attr, props[attr]);
 	}

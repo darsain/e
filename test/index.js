@@ -95,6 +95,13 @@ describe('e(name, [props], [children])', function () {
 			assert(el.style.position === styles.position);
 			assert(el.style.top === styles.top);
 		});
+		it('should add `class` and `className` to already present classes', function () {
+			var el = e('.foo', {
+				class: 'bar baz',
+				className: 'bax'
+			});
+			assert(el.className === 'foo bar baz bax');
+		});
 	});
 	describe('[children]', function () {
 		it('should be optional', function () {
