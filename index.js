@@ -68,6 +68,9 @@ function applyProperties(element, props) {
 	for (var attr in props) {
 		// use direct assignment for event listeners
 		if (!attr.indexOf('on')) element[attr] = props[attr];
+		// handle style as an object
+		else if (attr === 'style' && typeof props[attr] === 'object')
+			for (var rule in props[attr]) element.style[rule] = props[attr][rule];
 		// use xlink namespace for 'xlink:...' attributes
 		else element.setAttributeNS(!attr.indexOf('xlink') ? xlinkNS : null, attr, props[attr]);
 	}

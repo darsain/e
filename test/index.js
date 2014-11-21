@@ -77,6 +77,24 @@ describe('e(name, [props], [children])', function () {
 			});
 			assert(img.onclick === fn);
 		});
+		it('should set styles when passed as a string', function () {
+			var el = e('div', {
+				style: 'position: absolute; top: 10px;'
+			});
+			assert(el.style.position === 'absolute');
+			assert(el.style.top === '10px');
+		});
+		it('should set styles when passed as an object', function () {
+			var styles = {
+				position: 'absolute',
+				top: '20px'
+			}
+			var el = e('div', {
+				style: styles
+			});
+			assert(el.style.position === styles.position);
+			assert(el.style.top === styles.top);
+		});
 	});
 	describe('[children]', function () {
 		it('should be optional', function () {
