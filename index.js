@@ -35,15 +35,20 @@ function createElementNS(namespaceURI, name, props, children) {
 		props = null;
 	}
 
-	var element, temp;
+	var element;
 	if (isArray(name)) {
 		element = doc.createDocumentFragment();
 		children = name;
 	} else {
-		temp = name.match(/^[\w\-]+/);
+		var temp = name.match(/^[\w\-]+/);
 		element = doc.createElementNS(namespaceURI, temp ? temp[0] : 'div');
 		if ((temp = name.match(/#([\w\-]+)/))) element.id = temp[1];
 		if ((temp = name.match(/\.[\w\-]+/g))) element.className = temp.join(' ').replace(/\./g, '');
+		if (~name.indexOf('[')) {
+			props = props || {};
+			var re = /\[([\w\-]+)=([^\[\]]+)\]/g;
+			while ((temp = re.exec(name)) != null) if(!(temp[1] in props)) props[temp[1]] = temp[2];
+		}
 		if (props) applyProperties(element, props);
 	}
 

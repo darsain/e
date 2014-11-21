@@ -45,6 +45,12 @@ describe('e(name, [props], [children])', function () {
 			assert(el.id === 'foo');
 			assert(el.className === 'bar baz');
 		});
+		it('should set attributes', function () {
+			var href = 'http://example.com/foo?bar=baz&bam=bax';
+			var el = e('a[href=' + href + '][target=_blank]');
+			assert(el.getAttribute('href') === href);
+			assert(el.getAttribute('target') === '_blank');
+		});
 		it('should default to div when no element type is specified', function () {
 			assert(e('.foo').nodeName === 'DIV');
 			assert(e('#foo.bar').nodeName === 'DIV');
@@ -101,6 +107,13 @@ describe('e(name, [props], [children])', function () {
 				className: 'bax'
 			});
 			assert(el.className === 'foo bar baz bax');
+		});
+		it('should override attributes set in `name` argument', function () {
+			var el = e('textarea[width=100][height=200]', {
+				width: 300
+			});
+			assert(el.getAttribute('width') === '300');
+			assert(el.getAttribute('height') === '200');
 		});
 	});
 	describe('[children]', function () {
