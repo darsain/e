@@ -1,5 +1,9 @@
 # Changelog
 
+**1.2.0** :: *27th Feb 2015*
+
+- ADD: Support for passing boolean and empty attributes without value in `[]` blocks of a **name** argument, such as `input[disabled]`, or `div[data-flag]`. Previously, attribute blocks required a value (`input[disabled=disabled]`).
+
 **1.1.0** :: *27th Feb 2015*
 
 - ADD: Support for passing a number as **[children]** argument `e('span', 42)`. Previously this would have to be stringified `e('span', '42')`.
