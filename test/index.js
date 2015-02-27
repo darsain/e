@@ -94,7 +94,7 @@ describe('e(name, [props], [children])', function () {
 			var styles = {
 				position: 'absolute',
 				top: '20px'
-			}
+			};
 			var el = e('div', {
 				style: styles
 			});
@@ -141,6 +141,28 @@ describe('e(name, [props], [children])', function () {
 				assert(el.children.length === 0);
 				assert(el.childNodes.length === 1);
 				assert(el.childNodes[0].nodeValue === '');
+			});
+		});
+		describe('as a number', function () {
+			it('should append a textNode', function () {
+				var el = e('div', {}, 5);
+				assert(el.children.length === 0);
+				assert(el.childNodes.length === 1);
+				assert(el.childNodes[0].nodeValue === '5');
+				el = e('div', 5);
+				assert(el.children.length === 0);
+				assert(el.childNodes.length === 1);
+				assert(el.childNodes[0].nodeValue === '5');
+			});
+			it('should append a textNode for falsy numbers', function () {
+				var el = e('div', {}, 0);
+				assert(el.children.length === 0);
+				assert(el.childNodes.length === 1);
+				assert(el.childNodes[0].nodeValue === '0');
+				el = e('div', 0);
+				assert(el.children.length === 0);
+				assert(el.childNodes.length === 1);
+				assert(el.childNodes[0].nodeValue === '0');
 			});
 		});
 		describe('as an element', function () {

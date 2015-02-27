@@ -4,6 +4,8 @@ Simple element creation / templating with SVG support.
 
 **e** creates DOM elements/fragments ready to be appendChilded to other elements. It doesn't create HTML strings!
 
+Inspired by [mithril](https://github.com/lhorie/mithril.js)'s view system.
+
 ## Install
 
 With [component(1)](https://github.com/component/component):
@@ -147,13 +149,13 @@ e('div', {style: 'position: absolute; top: 0;'});
 e('div', {style: {position: 'absolute', top: '0'});
 ```
 
-**[children]** `String | Element | Array`
+**[children]** `String | Number | Element | Array`
 
 Element child(ren). When:
 
-- `String` - It'll be transformed into a text node and appended. Empty strings are transformed into empty text nodes.
+- `String | Number` - It'll be transformed into a text node and appended. Empty strings are transformed into empty text nodes.
 - `Element` - It'll be appended.
-- `Array` - An array of strings and/or elements to be appended. Other values are ignored, so if you want to skip an element, just pass `null` or `undefined`.
+- `Array` - An array of strings, numbers, and/or elements to be appended. Other values are ignored, so if you want to skip an element, just pass `null` or `undefined`.
 
 ```js
 e('h1', 'This is title'); // text node

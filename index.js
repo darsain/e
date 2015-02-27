@@ -52,10 +52,10 @@ function createElementNS(namespaceURI, name, props, children) {
 		if (props) applyProperties(element, props);
 	}
 
-	if (children || typeof children === 'string') {
+	if (children != null) {
 		if (!isArray(children)) children = [children];
 		for (var i = 0, item, type; item = children[i], type = typeof item, i < children.length; i++) {
-			if (type === 'string') element.appendChild(doc.createTextNode(item));
+			if (type === 'string' || type === 'number') element.appendChild(doc.createTextNode(item));
 			else if (item && item.nodeType > 0) element.appendChild(item);
 		}
 	}
