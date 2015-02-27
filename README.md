@@ -28,6 +28,9 @@ e('em', '');    // <em>#text</em> => adds an empty text node
 e('i.icon.icon-check'); // <i class="icon icon-check"></i>
 e('a', { href: '/foo' }, 'Foo'); // <a href="/foo">Foo</a>
 e('a[href=/foo][target=_blank]', 'Foo'); // <a href="/foo" target="_blank">Foo</a>
+// safety
+e('div', '<em>foo</em>');          // <div>&lt;em&gt;foo&lt;/em&gt;</div>
+e('div', e.trust('<em>foo</em>')); // <div><em>foo</em></div>
 ```
 
 Nesting:
@@ -193,15 +196,43 @@ var fragment = e([
 document.body.appendChild(fragment);
 ```
 
+### e.trust(value)
+
+Creates a `String` object flaged as trusted. When **e** sees this object, it will use it as elements `innerHTML` as opposed to creating an escaped texNode and appending.
+
+**value** `Mixed` Can be anything, it will be stringified and passed to element's `innerHTML`.
+
+###### Example:
+
+```js
+e('div', e.trust('this is <strong>not</strong> gonna be escaped'));
+```
+
+This is kind of an edge case, but to keep the library simple, `e.trust()` can't be used in an array of children:
+
+```js
+e('div', [
+	'this is gonna be deleted by trusted string next in line',
+	e.trust('this will be used as div\'s innerHTML, deleting anything that came before')
+])
+```
+
+Instead, wrap it in another element:
+
+```js
+e('div', [
+	'this is gonna stay!',
+	e('span', e.trust('<strong>no</strong> issues here'))
+])
+```
+
 ### e.svg(name, [props], [children])
 
 Shorthand for creating elements in the SVG (`http://www.w3.org/2000/svg`) namespace URI:
 
 ### e.ns(namespaceURI)
 
-Returns a function that'll use specified `namespaceURI` when creating an element. The core `e()` & `e.svg()` functions are a result of this.
-
-You could re-implement them with:
+Returns a function that'll use specified `namespaceURI` when creating an element. The core `e()` & `e.svg()` functions are a result of this, and you could re-implement them by:
 
 ```js
 var ns = e.ns;

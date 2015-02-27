@@ -5,6 +5,7 @@ var svgNS = 'http://www.w3.org/2000/svg';
 var xlinkNS = 'http://www.w3.org/1999/xlink';
 
 module.exports = exports = createNS(xhtmlNS);
+exports.trust = trust;
 exports.svg = createNS(svgNS);
 exports.ns = createNS;
 
@@ -55,7 +56,8 @@ function createElementNS(namespaceURI, name, props, children) {
 	if (children != null) {
 		if (!isArray(children)) children = [children];
 		for (var i = 0, item, type; item = children[i], type = typeof item, i < children.length; i++) {
-			if (type === 'string' || type === 'number') element.appendChild(doc.createTextNode(item));
+			if (item instanceof String && item.$trusted === true) element.innerHTML = item;
+			else if (type === 'string' || type === 'number') element.appendChild(doc.createTextNode(item));
 			else if (item && item.nodeType > 0) element.appendChild(item);
 		}
 	}
@@ -82,4 +84,17 @@ function applyProperties(element, props) {
 		// use xlink namespace for 'xlink:...' attributes
 		else element.setAttributeNS(!attr.indexOf('xlink') ? xlinkNS : null, attr, props[attr]);
 	}
+}
+
+/**
+ * Creates a string object with trust flag.
+ *
+ * @param  {Mixed} value
+ * @return {String}
+ */
+function trust(value) {
+	/* jshint -W053 */
+	value = new String(value);
+	value.$trusted = true;
+	return value;
 }

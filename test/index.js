@@ -142,6 +142,24 @@ describe('e(name, [props], [children])', function () {
 				assert(el.childNodes.length === 1);
 				assert(el.childNodes[0].nodeValue === '');
 			});
+			it('should specialchars the html', function () {
+				var html = 'foo <br> bar';
+				var escaped = 'foo &lt;br&gt; bar';
+				var el = e('div', {}, 'foo <br> bar');
+				assert(el.children.length === 0);
+				assert(el.childNodes.length === 1);
+				assert(el.childNodes[0].nodeValue === html);
+				assert(el.innerHTML === escaped);
+			});
+			it('should insert the html when string is trusted', function () {
+				var html = 'foo <br> bar';
+				var el = e('div', {}, e.trust(html));
+				assert(el.children.length === 1);
+				assert(el.childNodes.length === 3);
+				assert(el.childNodes[0].nodeValue === 'foo ');
+				assert(el.childNodes[1].tagName.toLowerCase() === 'br');
+				assert(el.childNodes[2].nodeValue === ' bar');
+			});
 		});
 		describe('as a number', function () {
 			it('should append a textNode', function () {
@@ -254,6 +272,24 @@ describe('e(children)', function () {
 	});
 	it('should append elements and ', function () {
 		assert(e([]) instanceof DocumentFragment);
+	});
+});
+
+describe('e.trust(value)', function () {
+	var t = e.trust;
+	it('should create a new String object instance', function () {
+		assert(t() instanceof String);
+	});
+	it('should set a boolean $trusted flag to true', function () {
+		assert(t().$trusted === true);
+	});
+	it('should use the value as a String content', function () {
+		var html = 'foo <br> bar';
+		assert(t(html).valueOf() === html);
+		assert(t(5).valueOf() === '5');
+		assert(t(null).valueOf() === 'null');
+		assert(t(undefined).valueOf() === 'undefined');
+		assert(t({}).valueOf() === '[object Object]');
 	});
 });
 
