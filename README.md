@@ -25,6 +25,8 @@ e('.foo');      // <div class="foo"></div>
 e('#foo.bar');  // <div id="foo" class="bar"></div>
 e('em', 'Foo'); // <em>Foo</em>
 e('em', '');    // <em>#text</em> => adds an empty text node
+e('input[disabled]');   // <input type="text" disabled="disabled">
+e('div[data-flag]');    // <div data-flag=""></div>
 e('i.icon.icon-check'); // <i class="icon icon-check"></i>
 e('a', { href: '/foo' }, 'Foo'); // <a href="/foo">Foo</a>
 e('a[href=/foo][target=_blank]', 'Foo'); // <a href="/foo" target="_blank">Foo</a>

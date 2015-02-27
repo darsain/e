@@ -47,8 +47,8 @@ function createElementNS(namespaceURI, name, props, children) {
 		if ((temp = name.match(/\.[\w\-]+/g))) element.className = temp.join(' ').replace(/\./g, '');
 		if (~name.indexOf('[')) {
 			props = props || {};
-			var re = /\[([\w\-]+)=([^\[\]]+)\]/g;
-			while ((temp = re.exec(name)) != null) if(!(temp[1] in props)) props[temp[1]] = temp[2];
+			var re = /\[([\w\-]+)(?:=([^\[\]]+))?\]/g;
+			while ((temp = re.exec(name)) != null) if (!(temp[1] in props)) props[temp[1]] = temp[2];
 		}
 		if (props) applyProperties(element, props);
 	}
@@ -72,17 +72,25 @@ function createElementNS(namespaceURI, name, props, children) {
  * @param  {Object}  props
  */
 function applyProperties(element, props) {
-	for (var attr in props) {
+	var prop, value;
+	for (prop in props) {
+		value = props[prop];
 		// use direct assignment for event listeners
-		if (!attr.indexOf('on')) element[attr] = props[attr];
+		if (!prop.indexOf('on')) element[prop] = value;
 		// handle style as an object
-		else if (attr === 'style' && typeof props[attr] === 'object')
-			for (var rule in props[attr]) element.style[rule] = props[attr][rule];
+		else if (prop === 'style' && typeof value === 'object')
+			for (var rule in value) element.style[rule] = value[rule];
 		// add class and className to already present classes
-		else if (attr === 'class' || attr === 'className')
-			element.className += ' ' + props[attr];
-		// use xlink namespace for 'xlink:...' attributes
-		else element.setAttributeNS(!attr.indexOf('xlink') ? xlinkNS : null, attr, props[attr]);
+		else if (prop === 'class' || prop === 'className')
+			element.className += ' ' + value;
+		else {
+			// when value is missing:
+			// - set value to prop name for boolean values like [checked]
+			// - set value to empty string for empty attributes like [data-flag]
+			if (value == null) value = typeof element[prop] === 'boolean' ? prop : '';
+			// use xlink namespace for 'xlink:...' attributes
+			element.setAttributeNS(!prop.indexOf('xlink') ? xlinkNS : null, prop, value);
+		}
 	}
 }
 

@@ -45,11 +45,19 @@ describe('e(name, [props], [children])', function () {
 			assert(el.id === 'foo');
 			assert(el.className === 'bar baz');
 		});
-		it('should set attributes', function () {
+		it('should set attributes passed as [foo=bar]', function () {
 			var href = 'http://example.com/foo?bar=baz&bam=bax';
 			var el = e('a[href=' + href + '][target=_blank]');
 			assert(el.getAttribute('href') === href);
 			assert(el.getAttribute('target') === '_blank');
+		});
+		it('should set [boolean] attributes, such as input[disabled]', function () {
+			var el = e('input[disabled]');
+			assert(el.disabled === true);
+		});
+		it('should set empty attributes with no value, such as [data-flag]', function () {
+			var el = e('input[data-flag]');
+			assert(el.getAttribute('data-flag') === '');
 		});
 		it('should default to div when no element type is specified', function () {
 			assert(e('.foo').nodeName === 'DIV');
