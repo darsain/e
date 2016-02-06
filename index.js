@@ -48,7 +48,7 @@ function createElementNS(namespaceURI, name, props, children) {
 		if (~name.indexOf('[')) {
 			props = props || {};
 			var re = /\[([\w\-]+)(?:=([^\[\]]+))?\]/g;
-			while ((temp = re.exec(name)) != null) if (!(temp[1] in props)) props[temp[1]] = temp[2];
+			while ((temp = re.exec(name)) != null) if (!(temp[1] in props)) props[temp[1]] = temp[2] || temp[1];
 		}
 		if (props) applyProperties(element, props);
 	}
@@ -84,10 +84,13 @@ function applyProperties(element, props) {
 		else if (prop === 'class' || prop === 'className')
 			element.className += ' ' + value;
 		else {
-			// when value is missing:
-			// - set value to prop name for boolean values like [checked]
-			// - set value to empty string for empty attributes like [data-flag]
-			if (value == null) value = typeof element[prop] === 'boolean' ? prop : '';
+			// handle boolean properties like [checked]
+			if (typeof element[prop] === 'boolean') {
+				if (!value) continue;
+				value = prop;
+			}
+			// naive value stringification
+			if (typeof value !== 'string') value += '';
 			// use xlink namespace for 'xlink:...' attributes
 			element.setAttributeNS(!prop.indexOf('xlink') ? xlinkNS : null, prop, value);
 		}
