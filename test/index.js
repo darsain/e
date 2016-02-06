@@ -52,12 +52,8 @@ describe('e(name, [props], [children])', function () {
 			assert(el.getAttribute('target') === '_blank');
 		});
 		it('should set [boolean] attributes, such as input[disabled]', function () {
-			var el = e('input[disabled]');
-			assert(el.disabled === true);
-		});
-		it('should set empty attributes with no value, such as [data-flag]', function () {
-			var el = e('input[data-flag]');
-			assert(el.getAttribute('data-flag') === '');
+			assert(e('input[disabled]').disabled === true);
+			assert(e('input[type=checkbox][checked]').checked === true);
 		});
 		it('should default to div when no element type is specified', function () {
 			assert(e('.foo').nodeName === 'DIV');
@@ -122,6 +118,12 @@ describe('e(name, [props], [children])', function () {
 			});
 			assert(el.getAttribute('width') === '300');
 			assert(el.getAttribute('height') === '200');
+		});
+		it('should properly handle boolean attributes, such as input[disabled]', function () {
+			assert(e('input', {disabled: true}).disabled === true);
+			assert(e('input', {disabled: false}).disabled === false);
+			assert(e('input[type=checkbox]', {checked: true}).checked === true);
+			assert(e('input[type=checkbox]', {checked: false}).checked === false);
 		});
 	});
 	describe('[children]', function () {
