@@ -1,5 +1,9 @@
 # Changelog
 
+**1.2.1** :: *06th Feb 2016*
+
+- FIX: Boolean attributes such as `disabled` and `checked` were not appliet correctly when set via `props` argument and their value was falsy.
+
 **1.2.0** :: *27th Feb 2015*
 
 - ADD: Support for passing boolean and empty attributes without value in `[]` blocks of a **name** argument, such as `input[disabled]`, or `div[data-flag]`. Previously, attribute blocks required a value (`input[disabled=disabled]`).
